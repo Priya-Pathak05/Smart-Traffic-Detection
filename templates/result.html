@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Traffic Detection Result</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Confetti Animation Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    @keyframes bounce-in {
+      0%   { transform: scale(0.7); opacity: 0; }
+      60%  { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .animate-bounce-in {
+      animation: bounce-in 1s ease-out;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 text-center min-h-screen flex items-center justify-center">
+
+  <div class="p-6 bg-white dark:bg-gray-800 shadow-xl rounded-lg w-full max-w-2xl">
+    
+    <!-- 🎉 Congrats Banner -->
+    <h2 class="text-3xl font-bold text-green-600 animate-bounce-in mb-4">🎉 Analysis Complete!</h2>
+
+    <!-- Detection Result -->
+    {% if result %}
+      <p class="text-lg text-gray-800 dark:text-gray-300 mb-2">{{ result }}</p>
+    {% endif %}
+
+    <!-- Allocated Green Light Time -->
+    {% if time_allocated %}
+      <p class="text-md text-green-600 font-semibold mb-4">{{ time_allocated }}</p>
+    {% endif %}
+
+    <!-- Detected Image -->
+    {% if image_path %}
+      <img src="{{ url_for('static', filename='uploads/' + image_path) }}" 
+           alt="Detected Image" class="mx-auto rounded shadow-lg max-w-full mt-4">
+    {% else %}
+      <p class="text-red-500">❌ No result image found.</p>
+    {% endif %}
+
+    <!-- Action Button -->
+    <div class="mt-6">
+      <a href="/" 
+         class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded transition duration-300 ease-in-out transform hover:scale-105">
+        🔄 Try Another Image
+      </a>
+    </div>
+  </div>
+
+  <!-- 🎊 Confetti Celebration Script -->
+  <script>
+    const duration = 6000; // 6 seconds
+    const end = Date.now() + duration;
+
+    (function frame() {
+      confetti({
+        particleCount: 4,
+        angle: 60,
+        spread: 90,
+        origin: { x: 0 }
+      });
+      confetti({
+        particleCount: 4,
+        angle: 120,
+        spread: 90,
+        origin: { x: 1 }
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  </script>
+
+</body>
+</html>
